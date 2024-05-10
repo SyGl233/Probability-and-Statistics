@@ -1,0 +1,166 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{CJKutf8}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\geometry{a4paper,scale=0.8}
+\lstset{
+    basicstyle          =   \sffamily,        
+    keywordstyle        =   \bfseries,         
+    commentstyle        =   \rmfamily\itshape, 
+    stringstyle         =   \ttfamily, 
+    flexiblecolumns,               
+    numbers             =   left,  
+    showspaces          =   false, 
+    showstringspaces    =   false,
+    captionpos          =   t,     
+    frame               =   lrtb, 
+}
+
+\lstdefinestyle{Python}{
+    language        =   Python, % 语言选Python
+    basicstyle      =   \zihao{-5}\ttfamily,
+    numberstyle     =   \zihao{-5}\ttfamily,
+    keywordstyle    =   \color{blue},
+    keywordstyle    =   [2] \color{teal},
+    stringstyle     =   \color{magenta},
+    commentstyle    =   \color{red}\ttfamily,
+    breaklines      =   true,  
+    columns         =   fixed,  
+    basewidth       =   0.5em,
+}
+
+\title{\bf\Large  概率论与数理统计 第14次作业}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% DON'T forget to change this part %%
+\author{\bf Name: 宋昊原 \qquad Student ID: 2022010755}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+\maketitle
+\section{正态分布似然比检验}
+似然函数
+$$ L(\mu)=\frac{1}{(\sqrt{2\pi}\sigma^{2})^{n}}\exp(-\sum\limits_{i=1}^{n}\frac{(X_{i}-\mu)^{2}}{2\sigma^{2}}) $$
+极大似然估计值
+$$ \mu^{*}=\bar{X}$$
+故似然比
+$$ \Lambda=\exp(\sum\limits_{i=1}^{n}\frac{(X_{i}-\bar{X})^{2}}{2\sigma^{2}}-\sum\limits_{i=1}^{n}\frac{(X_{i}-\mu_{0})^{2}}{2\sigma^{2}})$$
+$$ =\exp(\frac{\sum\limits_{i=1}^{n}(\bar{X}^{2}-\mu_{0}^{2}-2X_{i}\bar{X}+2X_{i}\mu_{0})}{2\sigma^{2}})$$
+$$ =\exp(-\frac{(\bar{X}-\mu_{0})^{2}}{2\sigma^{2}})$$
+于是，$n$很大时，近似地有
+$$ -2\ln\Lambda = \frac{n(\bar{X}-\mu_{0})^{2}}{\sigma^{2}}\sim\chi^{2}(1)$$
+即
+$$ \frac{\bar{X}-\mu_{0}}{\sigma/\sqrt{n}}\sim{\rm N}(0,1)$$
+拒绝域形状为
+$$ \Lambda\leq\lambda_{0} $$
+这等价于
+$$ \vert\frac{\bar{X}-\mu_{0}}{\sigma/\sqrt{n}}\vert\geq c $$
+其中
+$$ c=Z_{\frac{\alpha}{2}}=Z_{0.025} $$
+与Z检验得到同样的结果.
+\section{Mendel似然比检验}
+似然比为
+$$\Lambda=\frac{\prod\limits_{i=1}^{4}p_{i}^{O_{i}}}{\prod\limits_{i=1}^{4}(\frac{O_{i}}{n})^{O_{i}}}=\prod\limits_{i=1}^{4}(\frac{E_{i}}{O_{i}})^{O_{i}}$$
+故
+$$ -2\ln\Lambda=2\sum\limits_{i=1}^{4}O_{i}\ln\frac{O_{i}}{E_{i}}$$
+其中$O_{i}$与$E_{i}$较接近，在$E_{i}$处作Taylor展开，得
+$$ -2\ln\Lambda=2\sum\limits_{i=1}^{4}(O_{i}-E_{i}+\frac{(O_{i}-E_{i})^{2}}{2E_{i}})=\sigma_{i=1}^{4}\frac{(O_{i}-E_{i})^{2}}{E_{i}}=\chi^{2}$$
+近似地有
+$$ \chi^{2}\sim\chi^{2}(3)$$
+这与Pearson的$\chi^{2}$检验吻合.
+\\\\代入计算，P值为0.9254，没有理由拒绝Mendel理论.
+\section{图像制作}
+假设两总体都是正态分布，则若方差相等，有
+$$ \frac{(n_{1}-1)S_{1}^{2}}{(n_{2}-1)S_{2}^{2}}\sim{\rm F}(n_{1}-1,n_{2}-1)$$
+拒绝域为
+$$ \frac{(n_{1}-1)S_{1}^{2}}{(n_{2}-1)S_{2}^{2}}\geq F_{\frac{\alpha}{2}}(n_{1}-1,n_{2}-1)\ \lor\ \frac{(n_{1}-1)S_{1}^{2}}{(n_{2}-1)S_{2}^{2}}\leq F_{1-\frac{\alpha}{2}}(n_{1}-1,n_{2}-1)$$
+计算得
+$$ \frac{(n_{1}-1)S_{1}^{2}}{(n_{2}-1)S_{2}^{2}}=0.0575 < F_{0.025}(6,4)=0.1087$$
+故可以拒绝原假设，两总体方差不等.
+\section{机床加工}
+\subsection{}
+$$ H_{0}:\ \mu_{1}=\mu_{2} $$
+$$ H_{1}:\ \mu_{1}\neq\mu_{2} $$
+$H_{0}$成立时
+$$ \frac{\bar{X}-\bar{Y}}{\sigma\sqrt{\frac{1}{n_{1}}+\frac{1}{n_{2}}}}\sim{\rm N}(0,1)$$
+而
+$$ \frac{(n_{1}-1)S_{1}^{2}+(n_{2}-1)S_{2}^{2}}{\sigma^{2}}\sim\chi^{2}(n_{1}+n_{2}-2)$$
+于是
+$$ \frac{\bar{X}-\bar{Y}}{\sqrt{(\frac{1}{n_{1}}+\frac{1}{n_{2}})((n_{1}-1)S_{1}^{2}+(n_{2}-1)S_{2}^{2})}}\sim{\rm t}(n_{1}+n_{2}-2)$$
+左边的统计量计算得
+$$ 0.7845 $$
+而t(18)分布的0.975分位数为
+$$ 2.1009 $$
+故不能拒绝原假设，生产稳定.
+\subsection{}
+$$ H_{0}:\ \sigma_{1}^{2}=\sigma_{2}^{2}$$
+$$ H_{1}:\ \sigma_{1}^{2}\neq\sigma_{2}^{2}$$
+$H_{0}$成立时有
+$$ \frac{(n_{1}-1)S_{1}^{2}}{(n_{2}-1)S_{2}^{2}}\sim{\rm F}(n_{1}-1,n_{2}-1)$$
+左边统计量计算得
+$$ 1.955 $$
+而F(9,9)分布的(0.025,\ 0.975)分位数区间为
+$$ (0.248,\ 4.026) $$
+故没有理由拒绝$H_{0}$，支持方差相同的假设.
+\section{地理是数学老师教的}
+设
+$$ (X,Y)\sim{\rm N}(\mu_{1},\mu_{2},\sigma_{1}^{2},\sigma_{2}^{2},\rho) $$
+则假设
+$$ H_{0}:\ \mu_{1}=\mu_{2} $$
+$$ H_{1}:\ \mu_{1}>\mu_{2} $$
+由于$X$和$Y$不一定独立，考察$X-Y$，当$H_{0}$成立时，其服从均值为0，方差未知的正态分布，于是
+$$ \frac{\bar{X}-\bar{Y}}{S/\sqrt{n}}\sim{\rm t}(n-1)$$
+其中$S$为$X-Y$的样本标准差.
+\\\\左边的统计量计算得3.559，而t(9)分布的0.95分位数为1.833，故有理由拒绝$H_{0}$，两组成绩有显著差异.
+\section{Bayes假设检验}
+\subsection{}
+后验概率之比
+$$ \frac{{\rm P}(H_{0}\vert x)}{{\rm P}(H_{1}\vert x)}=1\times\frac{0.5^{x}0.5^{10-x}}{0.7^{x}0.3^{10-x}}=(\frac{5}{7})^{x}(\frac{5}{3})^{10-x}=(\frac{3}{7})^{x}(\frac{5}{3})^{10}$$
+于是，拒绝$H_{0}$等价于上式小于1，即
+$$ X>10\log_{\frac{3}{7}}(\frac{3}{5})=10\frac{\ln3-\ln5}{\ln3-\ln7}=6.03$$
+即
+$$ X\geq 7 $$
+接受$H_{0}$等价于上式大于1，即
+$$ X\leq 6 $$
+于是第一类错误的概率为
+$$ {\rm P}(X\geq 7\ \vert\ p=0.5)=0.376$$
+第二类错误的概率为
+$$ {\rm P}(X\leq 6\ \vert\ p=0.7)=0.150$$
+\subsection{}
+后验概率之比
+$$ \frac{{\rm P}(H_{0}\vert x)}{{\rm P}(H_{1}\vert x)}=10\times\frac{0.5^{x}0.5^{10-x}}{0.7^{x}0.3^{10-x}}=10(\frac{5}{7})^{x}(\frac{5}{3})^{10-x}=10(\frac{3}{7})^{x}(\frac{5}{3})^{10}$$
+于是，拒绝$H_{0}$等价于上式小于1，即
+$$ X>\log_{\frac{3}{7}}(\frac{1}{10}(\frac{3}{5})^{10})=\frac{10\ln3-11\ln5-\ln2}{\ln3-\ln7}=8.75$$
+即
+$$ X\geq 9 $$
+接受$H_{0}$等价于上式大于1，即
+$$ X\leq 8 $$
+于是第一类错误的概率为
+$$ {\rm P}(X\geq 9\ \vert\ p=0.5)=0.054$$
+第二类错误的概率为
+$$ {\rm P}(X\leq 8\ \vert\ p=0.7)=0.617$$
+\section{单尾t分布假设检验}
+\subsection{检验结果}
+设$X$是任意一个总体，当$H_{0}$成立时
+$$\frac{\bar{X}-\mu_{0}}{S/\sqrt{n}}\sim{\rm t}(n-1) $$
+故拒绝$H_{0}$的条件为
+$$ \bar{X}<\mu_{0}-\frac{S}{\sqrt{n}}t_{\alpha}$$
+对总体$A$，计算得
+$$ \bar{A}=99.6 $$
+$$ \mu_{0}-\frac{S_{A}}{\sqrt{n_{A}}}t_{\alpha}=99.7 $$
+故对总体$A$拒绝原假设.\\\\
+对总体$B$，计算得
+$$ \bar{B}=-150 $$
+$$ \mu_{0}-\frac{S_{B}}{\sqrt{n_{B}}}t_{\alpha}=-215.7 $$
+故对总体$B$不拒绝原假设.
+\subsection{看法}
+统计显著和事实显著有很大区别.\ \ 统计显著性如何受到样本本身的波动情况和样本容量影响很大，样本容量越小，样本的标准差越大，拒绝的临界值就会越极端，从而统计显著会包容一些主观感受上非常极端的样本，例如上面的$B$.
+\end{CJK}
+\end{document}

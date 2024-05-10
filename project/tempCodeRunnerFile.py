@@ -1,0 +1,1 @@
+        cur = num[group]

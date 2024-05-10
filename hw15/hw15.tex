@@ -1,0 +1,145 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{CJKutf8}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\geometry{a4paper,scale=0.8}
+\lstset{
+    basicstyle          =   \sffamily,        
+    keywordstyle        =   \bfseries,         
+    commentstyle        =   \rmfamily\itshape, 
+    stringstyle         =   \ttfamily, 
+    flexiblecolumns,               
+    numbers             =   left,  
+    showspaces          =   false, 
+    showstringspaces    =   false,
+    captionpos          =   t,     
+    frame               =   lrtb, 
+}
+
+\lstdefinestyle{Python}{
+    language        =   Python, % 语言选Python
+    basicstyle      =   \zihao{-5}\ttfamily,
+    numberstyle     =   \zihao{-5}\ttfamily,
+    keywordstyle    =   \color{blue},
+    keywordstyle    =   [2] \color{teal},
+    stringstyle     =   \color{magenta},
+    commentstyle    =   \color{red}\ttfamily,
+    breaklines      =   true,  
+    columns         =   fixed,  
+    basewidth       =   0.5em,
+}
+
+\title{\bf\Large  概率论与数理统计 第15次作业}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% DON'T forget to change this part %%
+\author{\bf Name: 宋昊原 \qquad Student ID: 2022010755}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+\maketitle
+\section{线性回归(1)}
+\subsection{}
+考虑残差平方和
+$$ {\rm SSE}=\sum\limits_{i=1}^{n}(y_{i}-\beta_{0}-\beta_{1}x_{i})^{2}$$
+要使此值最小，求其偏导数：
+$$ \frac{\partial}{\partial\beta_{1}}{\rm SSE}=\sum\limits_{i=1}^{n}2x_{i}(\beta_{1}x_{i}+\beta_{0}-y_{i})$$
+$$ \frac{\partial}{\partial\beta_{0}}{\rm SSE}=\sum\limits_{i=1}^{n}2(\beta_{1}x_{i}+\beta_{0}-y_{i})$$
+于是
+$$ \sum\limits_{i=1}^{n}x_{i}(\hat{\beta_{1}}x_{i}+\hat{\beta_{0}}-y_{i})=0 $$
+$$ \sum\limits_{i=1}^{n}(\hat{\beta_{1}}x_{i}+\hat{\beta_{0}}-y_{i})=0 $$
+即
+$$ (\sum\limits_{i=1}^{n}x_{i}^{2})\hat{\beta_{1}}+n\bar{x}\hat{\beta_{0}}-\sum\limits_{i=1}^{n}x_{i}y_{i}=0$$
+$$ n\bar{x}\hat{\beta_{1}}+n\hat{\beta_{0}}-n\bar{y}=0$$
+由第二个方程即可知
+$$ \bar{y}=\hat{\beta_{1}}\bar{x}+\hat{\beta_{0}} $$
+这即说明回归直线过$(\bar{x},\ \bar{y})$.
+\subsection{}
+将上述第二个方程代入第一个方程，则
+$$ \frac{1}{n}(\sum\limits_{i=1}^{n}x_{i}^{2})\hat{\beta_{1}}+\bar{x}\bar{y}-(\bar{x})^{2}\hat{\beta_{1}}-\frac{1}{n}\sum\limits_{i=1}^{n}x_{i}y_{i}=0$$
+即
+$$ \frac{1}{n}(\sum\limits_{i=1}^{n}(x_{i}-\bar{x})^{2})\hat{\beta_{1}}=\frac{1}{n}(\sum\limits_{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y}))$$
+即
+$$ \hat{\beta_{1}}=\frac{S_{xy}}{S_{xx}}$$
+这得到了线性回归的结果.
+\\\\此时
+$$ {\rm Cov}(\hat{\beta_{0}},\hat{\beta_{1}})={\rm E}(\hat{\beta_{0}}\hat{\beta_{1}})-\beta_{0}\beta_{1}$$
+$$ ={\rm E}((\bar{y}-\frac{S_{xy}}{S_{xx}}\bar{x})\frac{S_{xy}}{S_{xx}})-\beta_{0}\beta_{1} $$
+$$ ={\rm E}(\sum\limits_{i,j}(\frac{1}{n}-\frac{x_{i}-\bar{x}}{S_{xx}}\bar{x})\frac{x_{j}-\bar{x}}{S_{xx}}y_{i}y_{j})-\beta_{0}\beta_{1} $$
+$$ =\sum\limits_{i,j}(\frac{1}{n}-\frac{x_{i}-\bar{x}}{S_{xx}}\bar{x})\frac{x_{j}-\bar{x}}{S_{xx}}{\rm E}(y_{i}y_{j})-\beta_{0}\beta_{1} $$
+由于
+$$ {\rm E}(y_{i}^{2})=\sigma^{2}+(\beta_{0}+\beta_{1}x_{i})^{2} $$
+$$ {\rm E}(y_{i}y_{j})=(\beta_{0}+\beta_{1}x_{i})(\beta_{0}+\beta_{1}x_{j}),\ i\neq j $$
+故
+$$ {\rm Cov}(\hat{\beta_{0}},\hat{\beta_{1}})=\sum\limits_{i=1}^{n}(\frac{1}{n}-\frac{x_{i}-\bar{x}}{S_{xx}}\bar{x})\frac{x_{i}-\bar{x}}{S_{xx}}\sigma^{2}+\sum\limits_{i,j}(\frac{1}{n}-\frac{x_{i}-\bar{x}}{S_{xx}}\bar{x})\frac{x_{j}-\bar{x}}{S_{xx}}(\beta_{0}+\beta_{1}x_{i})(\beta_{0}+\beta_{1}x_{j})-\beta_{0}\beta_{1} $$
+$$ =-\frac{\sigma^{2}\bar{x}}{S_{xx}}+\sum\limits_{i,j}(\frac{1}{n}-\frac{x_{i}-\bar{x}}{S_{xx}}\bar{x})\frac{x_{j}-\bar{x}}{S_{xx}}(\beta_{0}+\beta_{1}\bar{x}+\beta_{1}(x_{i}-\bar{x}))(\beta_{0}+\beta_{1}\bar{x}+\beta_{1}(x_{j}-\bar{x}))-\beta_{0}\beta_{1} $$
+$$ =-\frac{\sigma^{2}\bar{x}}{S_{xx}}+\beta_{1}\sum\limits_{i=1}^{n}(\frac{1}{n}-\frac{x_{i}-\bar{x}}{S_{xx}}\bar{x})(\beta_{0}+\beta_{1}\bar{x}+\beta_{1}(x_{i}-\bar{x}))-\beta_{0}\beta_{1} $$
+$$ =-\frac{\sigma^{2}\bar{x}}{S_{xx}}+\beta_{0}\beta_{1}+\beta_{1}^{2}\bar{x}-\beta_{1}^{2}\bar{x}-\beta_{0}\beta_{1} $$
+$$ =-\frac{\sigma^{2}\bar{x}}{S_{xx}} $$
+\subsection{}
+由于
+$$ \hat{\beta_{1}}=\frac{S_{xy}}{S_{xx}}=\frac{\sum\limits_{i=1}^{n}(x_{i}-\bar{x})y_{i}}{S_{xx}} $$
+可知
+$$ {\rm Var}(\hat{\beta_{1}})=\frac{\sigma^{2}}{S_{xx}} $$
+最小化此值需让$S_{xx}$尽可能大，由于
+$$ S_{xx} = \sum\limits_{i=1}^{n}(x_{i}-\bar{x})^{2}$$
+于是在$n$固定的情况下，应尽可能取等量的$-1$和$1$作为输入.
+\subsection{}
+$$ {\rm SSE}=\sum\limits_{i=1}^{n}(y_{i}-\beta_{1}x_{i})^{2}$$
+令此值最小，即
+$$ \frac{d}{d\beta_{1}} {\rm SSE}=2\sum\limits_{i=1}^{n}(y_{i}-\beta_{1}x_{i})=0 $$
+解得
+$$ \hat{\beta_{1}}=\frac{\bar{y}}{\bar{x}} $$
+此时由于
+$$ y_{0}=\beta_{1}x_{0}+\epsilon_{0} $$
+知
+$$ \hat{y_{0}}-y_{0}=\frac{\bar{y}}{\bar{x}}x_{0}-\beta_{1}x_{0}-\epsilon_{0} $$
+知
+$$ {\rm Var}(\hat{y_{0}}-y_{0})=\frac{x_{0}^{2}\sigma^{2}}{n\bar{x}^{2}}+\sigma^{2} $$
+故
+$$ \frac{\hat{y_{0}}-y_{0}}{\sqrt{\frac{x_{0}^{2}}{n\bar{x}^{2}}+1}\sigma}\sim{\rm N}(0,1) $$
+而令
+$$ \hat{\sigma}^{2}=\frac{\sum\limits_{i=1}^{n}(y_{i}-\frac{\bar{y}}{\bar{x}}x_{i})}{n-1} $$
+则有
+$$ (n-1)\hat{\sigma}^{2}\sim\chi^{2}(n-1)$$
+于是
+$$ \frac{\hat{y_{0}}-y_{0}}{\sqrt{\frac{x_{0}^{2}}{n\bar{x}^{2}}+1}\hat{\sigma}}\sim{\rm t}(n-1) $$
+故$1-\alpha$置信区间为
+$$ (\frac{\bar{y}}{\bar{x}}x_{0}-\hat{\sigma}\sqrt{\frac{x_{0}^{2}}{n\bar{x}^{2}}+1}t_{\frac{\alpha}{2}}(n-1),\ \frac{\bar{y}}{\bar{x}}x_{0}+\hat{\sigma}\sqrt{\frac{x_{0}^{2}}{n\bar{x}^{2}}+1}t_{\frac{\alpha}{2}}(n-1))$$
+其中$\hat{\sigma}$见上述定义.
+\section{线性回归(2)}
+\subsection{}
+似然函数
+$$ L(\beta_{0},\beta_{1},\sigma)=\prod\limits_{i=1}^{n}(\frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{(y_{i}-\beta_{1}x_{i}-\beta_{0})^{2}}{2\sigma^{2}}))$$
+对数似然为
+$$ \ln L=-n\ln(\sqrt{2\pi}\sigma)-\sum\limits_{i=1}^{n}\frac{(y_{i}-\beta_{1}x_{i}-\beta_{0})^{2}}{2\sigma^{2}}$$
+则
+$$ \frac{\partial}{\partial\sigma}\ln L=-\frac{n}{\sigma}+\sum\limits_{i=1}^{n}\frac{(y_{i}-\beta_{1}x_{i}-\beta_{0})^{2}}{\sigma^{3}}$$
+$$ \frac{\partial}{\partial\beta_{0}}\ln L=-\sum\limits_{i=1}^{n}\frac{(y_{i}-\beta_{1}x_{i}-\beta_{0})}{\sigma^{2}}$$
+$$ \frac{\partial}{\partial\beta_{1}}\ln L=-\sum\limits_{i=1}^{n}\frac{x_{i}(y_{i}-\beta_{1}x_{i}-\beta_{0})}{\sigma^{2}}$$
+令上述三个偏导数为0，即得到极大似然估计：
+$$ (\sigma^{*})^{2}=\frac{\sum\limits_{i=1}^{n}(y_{i}-\hat{\beta_{1}}x_{i}-\hat{\beta_{0}})^{2}}{n} $$
+$$ \hat\beta_{1}\bar{x}+\hat{\beta_{0}}=\bar{y} $$
+$$ \sum\limits_{i=1}^{n}x_{i}^{2}\hat{\beta_{1}}+n\bar{x}\hat{\beta_{0}}=\sum\limits_{i=1}^{n}x_{i}y_{i} $$
+解得
+$$ \hat{\beta_{1}}=\frac{S_{xy}}{S_{xx}} $$
+$$ \hat{\beta_{0}}=\bar{y}-\hat{\beta_{1}}\bar{x} $$
+$$ (\sigma^{*})^{2}=\frac{\sum\limits_{i=1}^{n}(y_{i}-\hat{\beta_{1}}x_{i}-\hat{\beta_{0}})^{2}}{n}=\frac{1}{n}{\rm SSE}$$
+\subsection{}
+$$ {\rm E}({\rm SSE})=\sum\limits_{i=1}^{n}{\rm E}((y_{i}-\hat{\beta_{1}}x_{i}-\hat{\beta_{0}})^{2})$$
+$$ =\sum\limits_{i=1}^{n}{\rm E}(y_{i}^{2})+\sum\limits_{i=1}^{n}{\rm E}(\hat{\beta_{1}}^{2}x_{i}^{2})+\sum\limits_{i=1}^{n}{\rm E}(\hat{\beta_{0}}^{2})-2\sum\limits_{i=1}^{n}{\rm E}(\hat{\beta_{1}}x_{i}y_{i})-2\sum\limits_{i=1}^{n}{\rm E}(\hat{\beta_{0}}y_{i})+2\sum\limits_{i=1}^{n}{\rm E}(\hat{\beta_{1}}\hat{\beta_{0}}x_{i}) $$
+$$ =\sum\limits_{i=1}^{n}(\sigma^{2}+(\beta_{0}+\beta_{1}x_{i})^{2} + \frac{\sigma^{2}}{S_{xx}}x_{i}^{2}+\beta_{1}^{2}x_{i}^{2} + (\frac{1}{n}+\frac{\bar{x}^{2}}{S_{xx}})\sigma^{2}+\beta_{0}^{2}) $$
+$$ -2\sigma^{2}-2\beta_{1}^{2}S_{xx}-2n\beta_{0}\beta_{1}\bar{x}-2n\beta_{1}^{2}\bar{x}^{2} - 2\sigma^{2}-2n\beta_{0}^{2}-2n\beta_{0}\beta_{1}\bar{x}-2n\bar{x}^{2}\frac{\sigma^{2}}{S_{xx}}+2n\beta_{0}\beta_{1}\bar{x} $$
+$$ =n\sigma^{2}+n(\beta_{0}+\beta_{1}\bar{x})^{2}+\beta_{1}^{2}S_{xx}+\sigma^{2}+n\bar{x}^{2}\frac{\sigma^{2}}{S_{xx}}+\beta_{1}^{2}S_{xx}+n\bar{x}^{2}\beta_{1}^{2}+\sigma^{2}+n\bar{x}^{2}\frac{\sigma^{2}}{S_{xx}}+n\beta_{0}^{2} $$
+$$ -2\sigma^{2}-2\beta_{1}^{2}S_{xx}-2n\beta_{0}\beta_{1}\bar{x}-2n\beta_{1}^{2}\bar{x}^{2} - 2\sigma^{2}-2n\beta_{0}^{2}-2n\beta_{0}\beta_{1}\bar{x}-2n\bar{x}^{2}\frac{\sigma^{2}}{S_{xx}}+2n\beta_{0}\beta_{1}\bar{x} $$
+$$ =(n-2)\sigma^{2} $$
+即$\frac{\rm SSE}{n-2}$是$\sigma^{2}$的无偏估计.
+\end{CJK}
+\end{document}
